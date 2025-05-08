@@ -14,20 +14,21 @@
             <h2 class="mb-4 text-center">문의사항</h2>
 
             <form method="POST" action="/writeAct">
-<!--                파일 업로드 추후 구현 필요-->
-<!--                &lt;!&ndash; 파일 업로드 &ndash;&gt;-->
-<!--                <div class="mb-3">-->
-<!--                    <label class="form-label">제품 이미지</label>-->
-<!--                    <input type="file" class="form-control" onchange="getURL(this);">-->
-<!--                    <div class="mt-2 text-center">-->
-<!--                        <img src="" id="imageView" class="img-fluid" style="max-width: 100px; display: none;">-->
-<!--                    </div>-->
-<!--                </div>-->
 
                 <!-- 제목 입력 -->
                 <div class="mb-3">
                     <label class="form-label">제목</label>
                     <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요.">
+                </div>
+
+                <!--                파일 업로드 추후 구현 필요-->
+                <!-- 파일 업로드 -->
+                <div class="mb-3">
+                    <label class="form-label">이미지 첨부</label>
+                    <input type="file" class="form-control" onchange="getURL(this);">
+                    <div class="mt-2 text-center">
+                        <img src="" id="imageView" class="img-fluid" style="max-width: 100px; display: none;">
+                    </div>
                 </div>
 
                 <!-- 내용 입력 -->
