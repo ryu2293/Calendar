@@ -2,6 +2,7 @@ package baeksoo.note.admin;
 
 import baeksoo.note.member.CustomUser;
 import baeksoo.note.member.Member;
+import baeksoo.note.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminRepository adminRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/write")
     public String write(){
@@ -56,5 +58,17 @@ public class AdminController {
         model.addAttribute("list", result);
         model.addAttribute("pages", list.getTotalPages());
         return "list.html";
+    }
+
+    @GetMapping("/allMember/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('관리자')")
+    public String allMember(Model model, @PathVariable Integer id){
+        Page<Member> members = memberRepository.findAll(PageRequest.of(id-1, 12));
+        if(members.isEmpty() || members == null){
+            return "error.html";
+        }
+        model.addAttribute("members", members.get());
+        model.addAttribute("pages", members.getTotalPages());
+        return "allMember.html";
     }
 }
