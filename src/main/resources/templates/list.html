@@ -27,7 +27,7 @@
                 <td th:text="${i.title}">제목</td>
                 <td th:text="${i.member.username}">문의자</td>
                 <td th:text="${#temporals.format(i.created, 'yyyy-MM-dd HH:mm')}">작성일</td>
-                <td><a th:href="@{'/inquiry/' + ${i.id}}">조회</a></td>
+                <td><a th:href="@{/admin/answer/{id}(id=${i.id})}">조회</a></td>
             </tr>
             </tbody>
         </table>

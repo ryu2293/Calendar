@@ -13,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -71,4 +74,40 @@ public class AdminController {
         model.addAttribute("pages", members.getTotalPages());
         return "allMember.html";
     }
+
+    @PostMapping("/admin/delete/{id}")
+    @PreAuthorize("hasAuthority('관리자')")
+    public String deleteMember(@PathVariable Long id, RedirectAttributes redirectAttributes){
+        memberRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("message", "회원탈퇴 되었습니다!");
+        return "redirect:/allMember/1";
+    }
+
+    @GetMapping("/admin/answer/{id}")
+    @PreAuthorize("hasAuthority('관리자')")
+    public String showAnswerForm(@PathVariable Long id, Model model) {
+        Optional<Admin> admin = adminRepository.findById(id);
+        if (admin.isEmpty()) {
+            return "error.html";
+        }
+        var result = admin.get();
+        model.addAttribute("admin", result);
+        return "answer.html";
+    }
+
+    @PostMapping("/admin/answerAct")
+    @PreAuthorize("hasAuthority('관리자')")
+    public String answer(Long id, String answer, RedirectAttributes redirectAttributes) {
+        Admin admin = adminRepository.findById(id).orElse(null);
+        if (admin == null) {
+            redirectAttributes.addFlashAttribute("message", "문의가 존재하지 않습니다.");
+            return "redirect:/list/1";
+        }
+        admin.setAnswer(answer);
+        adminRepository.save(admin);
+        redirectAttributes.addFlashAttribute("message", "답변이 등록되었습니다.");
+        return "redirect:/list/1";
+    }
+
+
 }

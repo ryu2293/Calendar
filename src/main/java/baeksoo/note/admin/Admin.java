@@ -29,6 +29,9 @@ public class Admin {
     )
     private Member member;
 
+    @Column(length = 1000)
+    private String answer;
+
     @CreationTimestamp
     private LocalDateTime created;
 }

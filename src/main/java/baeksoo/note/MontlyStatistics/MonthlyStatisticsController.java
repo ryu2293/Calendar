@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +21,15 @@ import java.util.Map;
 public class MonthlyStatisticsController {
     private final CalendarRepositoy calendarRepositoy;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/statistics")
-    public String showStatisticsPage() {
+    public String showStatisticsPage(Authentication auth, RedirectAttributes redirectAttributes) {
+        if(auth == null){
+            String message = "로그인이 필요합니다!";
+            redirectAttributes.addFlashAttribute("message", message);
+            return "redirect:/login";
+        }
+
         return "statistics";
     }
 
